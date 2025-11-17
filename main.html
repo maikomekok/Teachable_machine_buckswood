@@ -1,0 +1,464 @@
+<!-- Chosen Palette: Warm Educational Neutrals (Bg: Amber-50, Accent: Green-600) -->
+<!-- Application Structure Plan: The SPA is structured as a process flow guide for a student, followed by a dedicated interactive section for the teacher (sharing options). This structure prioritizes the primary user (student) by placing the step-by-step creation guide first using an interactive tab system (Flow/Process Visualization). The Teacher/Sharing section uses a toggle (Tabbed/Toggled Content) to clearly delineate the two sharing methods, making decision-making easier for the instructor. Key data points (like 50-100 images) are highlighted as dynamic stats. -->
+<!-- Visualization & Content Choices: Summary: Instructional Text -> Goal -> Guide student interaction -> Viz/Presentation Method -> Interactive Flowchart (HTML/JS) / Dynamic Stats / Toggle Content / Chart.js Bar Chart Simulation -> Justification -> Replaces static text with guided, sequential interaction (flowchart) and clarifies teacher choices (toggle). A simulated "Model Quality" bar chart is included to introduce data visualization concepts related to model training, even without source numerical data, to fulfill the mandatory viz requirement. -> Library/Method - Vanilla JS for flow logic and Chart.js for visualization. - Confirming NO SVG/Mermaid, supporting the DESIGNED structure. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachable Machine: ინტერაქტიული სახელმძღვანელო</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=BPG+Nateli+Mtreli:wght@400;700&display=swap');
+        body { font-family: 'BPG Nateli Mtreli', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body class="bg-amber-50 min-h-screen text-gray-800">
+
+    <header class="bg-green-600 text-white shadow-lg sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-2xl font-bold">🧠 Teachable Machine: ინტერაქტიული გზამკვლევი</h1>
+            <nav class="mt-3 md:mt-0">
+                <a href="#student" class="mx-2 hover:text-amber-200 transition">მოდელის შექმნა</a>
+                <a href="#teacher" class="mx-2 hover:text-amber-200 transition">მოდელის გაზიარება</a>
+                <a href="#tasks" class="mx-2 hover:text-amber-200 transition">პრაქტიკული დავალებები</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- SECTION 1: INTRO & TOOL ACCESS -->
+        <section class="mb-12 p-6 bg-white shadow-xl rounded-xl">
+            <h2 class="text-3xl font-bold text-green-700 mb-4">შესავალი: სწავლება კოდის გარეშე</h2>
+            <p class="text-lg mb-6">
+                ეს ინტერაქტიული სახელმძღვანელო დაგეხმარებათ გაიგოთ მანქანური სწავლების საფუძვლები Google-ის Teachable Machine პლატფორმის გამოყენებით. თქვენ შეძლებთ შექმნათ მოდელი, რომელიც ამოიცნობს სურათებს, ხმებს ან პოზებს, მხოლოდ მონაცემების ატვირთვით — კოდირების ცოდნა არ არის საჭირო!
+            </p>
+            <p class="mb-6">
+                სტუდენტის მთავარი მიზანია ექსპერიმენტის გზით დაინახოს, როგორ მოქმედებს მონაცემების ხარისხი და რაოდენობა მოდელის სიზუსტეზე.
+            </p>
+            <a href="https://teachablemachine.withgoogle.com/" target="_blank" class="inline-block px-8 py-3 bg-green-600 text-white text-xl font-bold rounded-lg shadow-md hover:bg-green-700 transition transform hover:scale-105">
+                დაიწყეთ Teachable Machine-ზე
+            </a>
+        </section>
+
+        <!-- SECTION 2: STUDENT INTERACTIVE FLOW (ნაბიჯი 1) -->
+        <section id="student" class="mb-12 p-6 bg-white shadow-xl rounded-xl">
+            <h2 class="text-3xl font-bold text-green-700 mb-6 border-b pb-3">ნაბიჯი 1: მოდელის შექმნა და გაწვრთნა</h2>
+            
+            <p class="mb-6">
+                აქ შეგიძლიათ ინტერაქტიულად გაიაროთ მოდელის შექმნის 5 ძირითადი ეტაპი. დააჭირეთ თითოეულ ნაბიჯს, რომ მიიღოთ დეტალური ინსტრუქცია.
+            </p>
+
+            <!-- Flowchart Navigation / Tabs -->
+            <div id="flow-tabs" class="flex flex-wrap justify-center border-b border-gray-200 mb-6">
+                <button data-step="1" class="step-tab px-4 py-2 text-sm md:text-base font-semibold border-b-4 border-transparent text-gray-500 hover:text-green-600 focus:outline-none transition active-step-tab">1. პროექტის დაწყება</button>
+                <button data-step="2" class="step-tab px-4 py-2 text-sm md:text-base font-semibold border-b-4 border-transparent text-gray-500 hover:text-green-600 focus:outline-none transition">2. კლასების განსაზღვრა</button>
+                <button data-step="3" class="step-tab px-4 py-2 text-sm md:text-base font-semibold border-b-4 border-transparent text-gray-500 hover:text-green-600 focus:outline-none transition">3. მონაცემების შეგროვება</button>
+                <button data-step="4" class="step-tab px-4 py-2 text-sm md:text-base font-semibold border-b-4 border-transparent text-gray-500 hover:text-green-600 focus:outline-none transition">4. მოდელის გაწვრთნა</button>
+                <button data-step="5" class="step-tab px-4 py-2 text-sm md:text-base font-semibold border-b-4 border-transparent text-gray-500 hover:text-green-600 focus:outline-none transition">5. ტესტირება</button>
+            </div>
+
+            <!-- Flowchart Content Area -->
+            <div id="flow-content">
+                <div data-step="1" class="step-content">
+                    <h3 class="text-2xl font-bold mb-3 text-green-600">1. პროექტის დაწყება</h3>
+                    <p class="mb-4">
+                        გადადით Teachable Machine-ის საიტზე და დააჭირეთ ღილაკს **„Get Started“** (დაწყება). შემდეგ აირჩიეთ **„Image Project“** (სურათის პროექტი) და შეარჩიეთ **„Standard image model“** (სტანდარტული სურათის მოდელი). 
+                    </p>
+                    <p class="p-3 bg-green-50 rounded-lg border border-green-200">
+                        **რატომ?** ეს განსაზღვრავს, რომ თქვენი მოდელი იმუშავებს ვიზუალური ინფორმაციის ამოცნობაზე.
+                    </p>
+                </div>
+
+                <div data-step="2" class="step-content hidden">
+                    <h3 class="text-2xl font-bold mb-3 text-green-600">2. კლასების განსაზღვრა (Classes)</h3>
+                    <p class="mb-4">
+                        კლასები არის ის კატეგორიები, რომელთა ამოცნობაც გსურთ, რომ ისწავლოს კომპიუტერმა (მაგალითად, „ვაშლი“ და „ბანანი“). **Class 1**-ს და **Class 2**-ს დაარქვით სასურველი სახელები. 
+                    </p>
+                    <p class="p-3 bg-green-50 rounded-lg border border-green-200">
+                        **მაგალითი:** შეგიძლიათ განსაზღვროთ კლასები: 1. „ხელი მაღლა“ და 2. „ხელი დაბლა“.
+                    </p>
+                </div>
+
+                <div data-step="3" class="step-content hidden">
+                    <h3 class="text-2xl font-bold mb-3 text-green-600">3. მონაცემების შეგროვება (Gather Data)</h3>
+                    <p class="mb-4">
+                        თითოეული კლასისთვის უნდა მიაწოდოთ ბევრი მაგალითი. მონაცემების შეგროვება შეგიძლიათ ორი გზით:
+                        <ul class="list-disc list-inside ml-4 space-y-1 mt-2">
+                            <li>**Webcam:** დააჭირეთ „Webcam“ (ვებკამერა) და გადაუღეთ უამრავი სურათი (მაგალითად, ვაშლს სხვადასხვა პოზიციიდან, განათებით).</li>
+                            <li>**Upload (ატვირთვა):** მოძებნეთ და გადმოწერეთ სურათები ინტერნეტიდან, შემდეგ კი დააჭირეთ „Upload“ და ატვირთეთ ისინი თქვენი კომპიუტერიდან.</li>
+                        </ul>
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-around items-center space-y-4 md:space-y-0 p-4 bg-amber-100 rounded-lg shadow-inner mt-4">
+                        <div class="text-center">
+                            <div class="text-4xl font-extrabold text-green-600">50-100</div>
+                            <div class="text-sm text-gray-600">მინიმალური სურათი თითო კლასზე</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-extrabold text-green-600">შუქი და პოზიცია</div>
+                            <div class="text-sm text-gray-600">მრავალფეროვანი მაგალითები აუმჯობესებს მოდელს</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-step="4" class="step-content hidden">
+                    <h3 class="text-2xl font-bold mb-3 text-green-600">4. მოდელის გაწვრთნა (Train Model)</h3>
+                    <p class="mb-4">
+                        საკმარისი მონაცემების შეგროვების შემდეგ, დააჭირეთ ღილაკს **„Train Model“** (მოდელის გაწვრთნა). 
+                    </p>
+                    <p class="p-3 bg-red-50 rounded-lg border border-red-200 font-semibold text-red-700">
+                        **მნიშვნელოვანია:** ამ პროცესის განმავლობაში არ დახუროთ ბრაუზერის ფანჯარა! კომპიუტერი სწავლობს მონაცემებს შორის განსხვავებებს.
+                    </p>
+                </div>
+                
+                <div data-step="5" class="step-content hidden">
+                    <h3 class="text-2xl font-bold mb-3 text-green-600">5. ტესტირება (Preview)</h3>
+                    <p class="mb-4">
+                        როდესაც მოდელი გაიწვრთნება, ეკრანის მარჯვენა ნაწილში გამოჩნდება ტესტირების ზონა. აირჩიეთ **„Webcam“** ან **„File“** და აჩვენეთ მოდელს ახალი, უცნობი ობიექტი. 
+                    </p>
+                    <p class="p-3 bg-green-50 rounded-lg border border-green-200">
+                        **შედეგი:** თუ მოდელი სწორად ამოიცნობს ობიექტს, თქვენ წარმატებით შექმენით მანქანური სწავლის სიმულაცია! სცადეთ, შეცდომაში შეიყვანოთ მოდელი!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: STUDENT SHARING INSTRUCTIONS (ნაბიჯი 2) - UPDATED FOR STUDENT FOCUS -->
+        <section id="teacher" class="mb-12 p-6 bg-white shadow-xl rounded-xl">
+            <h2 class="text-3xl font-bold text-green-700 mb-6 border-b pb-3">ნაბიჯი 2: მოდელის გაზიარება მასწავლებელთან</h2>
+            
+            <p class="mb-6">
+                თქვენი დასრულებული მოდელის მასწავლებლისთვის გადაცემა შესაძლებელია ორი ძირითადი გზით: ბმულით ან ეკრანის სურათით.
+            </p>
+
+            <!-- Toggle/Tabbed Interface for Sharing Options -->
+            <div class="flex justify-center mb-6">
+                <button id="toggle-demo" class="share-toggle px-6 py-2 rounded-l-lg font-semibold bg-green-600 text-white transition hover:bg-green-700">ვარიანტი A: ბმულის გაზიარება</button>
+                <button id="toggle-file" class="share-toggle px-6 py-2 rounded-r-lg font-semibold bg-gray-200 text-gray-800 transition hover:bg-gray-300">ვარიანტი B: ეკრანის სურათი (Screenshot)</button>
+            </div>
+
+            <!-- Content for Option A: Demo Link -->
+            <div id="content-demo" class="p-4 border-2 border-green-300 rounded-xl bg-green-50">
+                <h3 class="text-2xl font-bold mb-3 text-green-700">ვარიანტი A: მოდელის ბმულის გაზიარება (რეკომენდებულია)</h3>
+                <p class="mb-4">
+                    ეს არის უმარტივესი გზა. მასწავლებელი შეძლებს თქვენი მოდელის ტესტირებას თავის ბრაუზერში.
+                </p>
+                <ol class="list-decimal list-inside space-y-2 ml-4">
+                    <li>გაწვრთნის შემდეგ, დააჭირეთ ღილაკს **„Export Model“** (მოდელის ექსპორტი).</li>
+                    <li>აირჩიეთ **„Upload my model“** (მოდელის ატვირთვა) და დააჭირეთ **„Upload“** (ატვირთვა).</li>
+                    <li>ატვირთვის დასრულების შემდეგ, დააკოპირეთ **„Shareable Link“** (გასაზიარებელი ბმული).</li>
+                    <li>გაუგზავნეთ ეს ბმული მასწავლებელს.</li>
+                </ol>
+                
+                <h4 class="text-xl font-semibold mt-6 mb-3">მოდელის ტესტირების სიმულაცია (რომელიც მასწავლებელს გამოუჩნდება)</h4>
+                <p class="text-sm text-gray-600 mb-3">
+                    გაწვრთნილი მოდელი აფასებს ობიექტის შესაბამისობას (კონფიდენციალურობას) თითოეულ კლასთან. ქვემოთ მოცემულია იმიტირებული შედეგი ახალ ობიექტზე ტესტირებისას:
+                </p>
+                <div class="chart-container">
+                    <canvas id="modelConfidenceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Content for Option B: Project File -->
+            <div id="content-file" class="p-4 border-2 border-gray-400 rounded-xl bg-gray-100 hidden">
+                <h3 class="text-2xl font-bold mb-3 text-gray-700">ვარიანტი B: ეკრანის სურათის (Screenshot) გაგზავნა</h3>
+                <p class="mb-4">
+                    თუ ბმულის გაზიარება ვერ ხერხდება, შეგიძლიათ გაუგზავნოთ მასწავლებელს ეკრანის სურათი, სადაც ჩანს თქვენი მოდელის ტესტირების შედეგები.
+                </p>
+                <ol class="list-decimal list-inside space-y-2 ml-4">
+                    <li>მოდელის გაწვრთნის შემდეგ (ნაბიჯი 4), ტესტირების ზონაში (Preview) აჩვენეთ კამერით ან ფაილით ობიექტი.</li>
+                    <li>დარწმუნდით, რომ ეკრანზე ნაჩვენებია **სწორი ამოცნობის შედეგები** (მაღალი პროცენტი).</li>
+                    <li>გადაუღეთ ეკრანის სურათი მთლიან Teachable Machine ფანჯარას, რათა ჩანდეს **კლასების სახელები** და **ტესტირების შედეგები (პროცენტები)**.</li>
+                    <li>გაუგზავნეთ ეს სურათი მასწავლებელს.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- SECTION 4: STUDENT TASKS -->
+        <section id="tasks" class="mb-12 p-6 bg-white shadow-xl rounded-xl">
+            <h2 class="text-3xl font-bold text-green-700 mb-6 border-b pb-3">✅ პრაქტიკული დავალებები (Task List)</h2>
+            <p class="mb-6 text-lg">
+                თქვენი მიზანია, შექმნათ მოდელი თითოეული დავალებისთვის, გაწვრთნათ ის და შემდეგ მასწავლებელს გაუგზავნოთ დასრულებული პროექტის ბმული (ვარიანტი A) ან ეკრანის სურათი (ვარიანტი B). **ყველა დავალება არის Image Project.**
+            </p>
+            <div id="task-list" class="space-y-4">
+                
+                <!-- Task 1: Hand Poses -->
+                <div class="border border-amber-300 rounded-lg overflow-hidden">
+                    <button class="w-full text-left p-4 bg-amber-50 font-semibold text-lg flex justify-between items-center" onclick="toggleAccordion('task1')">
+                        <span>1. ✋ ხელის პოზების ამოცნობა</span>
+                        <span id="task1-icon" class="text-2xl">+</span>
+                    </button>
+                    <div id="task1-content" class="p-4 bg-white hidden border-t">
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>**კლასი 1:** „ხელი მაღლა“</li>
+                            <li>**კლასი 2:** „ხელი დაბლა“</li>
+                            <li>**გამოწვევა:** შეეცადეთ, რომ მოდელმა ზუსტად ამოიცნოს პოზიციის სწრაფი ცვლილება.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Task 2: Object Color -->
+                <div class="border border-amber-300 rounded-lg overflow-hidden">
+                    <button class="w-full text-left p-4 bg-amber-50 font-semibold text-lg flex justify-between items-center" onclick="toggleAccordion('task2')">
+                        <span>2. 🟡 ობიექტის ფერის მიხედვით დახარისხება</span>
+                        <span id="task2-icon" class="text-2xl">+</span>
+                    </button>
+                    <div id="task2-content" class="p-4 bg-white hidden border-t">
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>**კლასი 1:** „წითელი ობიექტი“ (მაგ., ვაშლი)</li>
+                            <li>**კლასი 2:** „ლურჯი ობიექტი“ (მაგ., ბლოკნოტი)</li>
+                            <li>**გამოწვევა:** გაწვრთნეთ მოდელი ისე, რომ ის ობიექტს ამოიცნობდეს ფერის მიუხედავად (შუქის ცვლილებებით).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Task 3: Background vs Foreground -->
+                <div class="border border-amber-300 rounded-lg overflow-hidden">
+                    <button class="w-full text-left p-4 bg-amber-50 font-semibold text-lg flex justify-between items-center" onclick="toggleAccordion('task3')">
+                        <span>3. 🖼️ ფონი/წინა პლანის გარჩევა</span>
+                        <span id="task3-icon" class="text-2xl">+</span>
+                    </button>
+                    <div id="task3-content" class="p-4 bg-white hidden border-t">
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>**კლასი 1:** „ცარიელი მაგიდა“ (მხოლოდ ფონი)</li>
+                            <li>**კლასი 2:** „ობიექტი მაგიდაზე“ (წინა პლანი)</li>
+                            <li>**გამოწვევა:** მოძებნეთ ყველაზე მცირე ობიექტი, რომლის ამოცნობაც შეუძლია მოდელს.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Task 4: Facial Expressions -->
+                <div class="border border-amber-300 rounded-lg overflow-hidden">
+                    <button class="w-full text-left p-4 bg-amber-50 font-semibold text-lg flex justify-between items-center" onclick="toggleAccordion('task4')">
+                        <span>4. 😄 სახის გამომეტყველების ამოცნობა</span>
+                        <span id="task4-icon" class="text-2xl">+</span>
+                    </button>
+                    <div id="task4-content" class="p-4 bg-white hidden border-t">
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>**კლასი 1:** „ბედნიერი სახე“</li>
+                            <li>**კლასი 2:** „სევდიანი სახე“</li>
+                            <li>**კლასი 3:** „გაკვირვებული სახე“</li>
+                            <li>**გამოწვევა:** შეამოწმეთ, როგორ მუშაობს მოდელი, როდესაც სახე ოდნავ მოშორებულია კამერისგან.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Task 5: Simple vs Complex Textures (NEW Task) -->
+                <div class="border border-amber-300 rounded-lg overflow-hidden">
+                    <button class="w-full text-left p-4 bg-amber-50 font-semibold text-lg flex justify-between items-center" onclick="toggleAccordion('task5')">
+                        <span>5. 🎨 მარტივი vs რთული ტექსტურები</span>
+                        <span id="task5-icon" class="text-2xl">+</span>
+                    </button>
+                    <div id="task5-content" class="p-4 bg-white hidden border-t">
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>**კლასი 1:** „მარტივი ტექსტურა“ (მაგ., თეთრი ქაღალდი)</li>
+                            <li>**კლასი 2:** „რთული ტექსტურა“ (მაგ., ხის ქერქი ან ხალიჩა)</li>
+                            <li>**გამოწვევა:** შეამოწმეთ, შეუძლია თუ არა მოდელს ამოიცნოს მხოლოდ ტექსტურა, ობიექტის ფორმის იგნორირებით.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Task 6: Custom 3-Class Sorting (Original 6) -->
+                <div class="border border-amber-300 rounded-lg overflow-hidden">
+                    <button class="w-full text-left p-4 bg-amber-50 font-semibold text-lg flex justify-between items-center" onclick="toggleAccordion('task6')">
+                        <span>6. 📐 სამი კლასის რთული ამოცნობა</span>
+                        <span id="task6-icon" class="text-2xl">+</span>
+                    </button>
+                    <div id="task6-content" class="p-4 bg-white hidden border-t">
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>**კლასი 1:** „მრგვალი ობიექტი“ (მაგ., ბურთი)</li>
+                            <li>**კლასი 2:** „კვადრატული ობიექტი“ (მაგ., წიგნი)</li>
+                            <li>**კლასი 3:** „არაფერი“ (ცარიელი ფონი)</li>
+                            <li>**გამოწვევა:** შეამოწმეთ, როგორ მოქმედებს მონაცემების **ხარისხი** (ბუნდოვანი სურათები) სიზუსტეზე.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Task 7: Data Quantity Experiment (Original 7) -->
+                <div class="border border-amber-300 rounded-lg overflow-hidden">
+                    <button class="w-full text-left p-4 bg-amber-50 font-semibold text-lg flex justify-between items-center" onclick="toggleAccordion('task7')">
+                        <span>7. 📈 მონაცემების რაოდენობის ექსპერიმენტი</span>
+                        <span id="task7-icon" class="text-2xl">+</span>
+                    </button>
+                    <div id="task7-content" class="p-4 bg-white hidden border-t">
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>**კლასი A:** შეაგროვეთ მხოლოდ 10 სურათი.</li>
+                            <li>**კლასი B:** შეაგროვეთ 100 სურათი.</li>
+                            <li>**კლასი C:** შეაგროვეთ 300 სურათი.</li>
+                            <li>**გამოწვევა:** გაწვრთნეთ მოდელი და შემდეგ შეამოწმეთ, რამდენად ზუსტია თითოეული კლასი. რომელი კლასი მუშაობს საუკეთესოდ?</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-200 text-gray-600 text-center p-4">
+        <p>© 2024 Teachable Machine საგანმანათლებლო რესურსი. შექმნილია ინტერაქტიული სწავლისთვის.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- DATA ---
+            const STEPS = [
+                { id: 1, title: "პროექტის დაწყება" },
+                { id: 2, title: "კლასების განსაზღვრა" },
+                { id: 3, title: "მონაცემების შეგროვება" },
+                { id: 4, title: "მოდელის გაწვრთნა" },
+                { id: 5, title: "ტესტირება" }
+            ];
+
+            const CHART_DATA = {
+                labels: ['კლასი 1 (ვაშლი)', 'კლასი 2 (ბანანი)', 'კლასი 3 (ქლიავი)'],
+                datasets: [{
+                    label: 'მოდელის კონფიდენციალურობა (%)',
+                    data: [85, 12, 3],
+                    backgroundColor: ['#10B981', '#FCD34D', '#EF4444'],
+                    borderColor: ['#059669', '#FBBF24', '#DC2626'],
+                    borderWidth: 1
+                }]
+            };
+
+            // --- STEP FLOW LOGIC ---
+            const stepTabs = document.querySelectorAll('.step-tab');
+            const stepContents = document.querySelectorAll('.step-content');
+
+            const activateStep = (stepId) => {
+                stepContents.forEach(content => {
+                    content.classList.add('hidden');
+                    if (parseInt(content.dataset.step) === stepId) {
+                        content.classList.remove('hidden');
+                    }
+                });
+
+                stepTabs.forEach(tab => {
+                    tab.classList.remove('active-step-tab', 'border-green-600', 'text-green-600');
+                    tab.classList.add('border-transparent', 'text-gray-500');
+                    if (parseInt(tab.dataset.step) === stepId) {
+                        tab.classList.add('active-step-tab', 'border-green-600', 'text-green-600');
+                        tab.classList.remove('border-transparent', 'text-gray-500');
+                    }
+                });
+            };
+
+            stepTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    activateStep(parseInt(tab.dataset.step));
+                });
+            });
+
+            // Activate initial step
+            activateStep(1);
+
+            // --- TEACHER SHARING TOGGLE LOGIC ---
+            const toggleDemo = document.getElementById('toggle-demo');
+            const toggleFile = document.getElementById('toggle-file');
+            const contentDemo = document.getElementById('content-demo');
+            const contentFile = document.getElementById('content-file');
+
+            const setToggleState = (activeId) => {
+                if (activeId === 'demo') {
+                    toggleDemo.classList.add('bg-green-600', 'text-white');
+                    toggleDemo.classList.remove('bg-gray-200', 'text-gray-800');
+                    toggleFile.classList.add('bg-gray-200', 'text-gray-800');
+                    toggleFile.classList.remove('bg-green-600', 'text-white');
+                    contentDemo.classList.remove('hidden');
+                    contentFile.classList.add('hidden');
+                } else {
+                    toggleFile.classList.add('bg-green-600', 'text-white');
+                    toggleFile.classList.remove('bg-gray-200', 'text-gray-800');
+                    toggleDemo.classList.add('bg-gray-200', 'text-gray-800');
+                    toggleDemo.classList.remove('bg-green-600', 'text-white');
+                    contentFile.classList.remove('hidden');
+                    contentDemo.classList.add('hidden');
+                }
+            };
+
+            toggleDemo.addEventListener('click', () => setToggleState('demo'));
+            toggleFile.addEventListener('click', () => setToggleState('file'));
+
+            // --- ACCORDION LOGIC ---
+            window.toggleAccordion = (tipId) => {
+                const content = document.getElementById(tipId + '-content');
+                const icon = document.getElementById(tipId + '-icon');
+                const isHidden = content.classList.contains('hidden');
+                
+                document.querySelectorAll('[id^="task"][id$="-content"]').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('[id^="task"][id$="-icon"]').forEach(i => i.textContent = '+');
+
+                if (isHidden) {
+                    content.classList.remove('hidden');
+                    icon.textContent = '–';
+                }
+            };
+
+            // --- CHART.JS INITIALIZATION ---
+            const ctx = document.getElementById('modelConfidenceChart').getContext('2d');
+            const modelConfidenceChart = new Chart(ctx, {
+                type: 'bar',
+                data: CHART_DATA,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + ' %';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'პროცენტული ალბათობა (%)',
+                                color: '#374151'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                callback: function(value, index, ticks) {
+                                    const label = this.getLabelForValue(value);
+                                    if (label.length > 16) {
+                                        return label.match(/.{1,16}/g);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
